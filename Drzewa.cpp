@@ -6,13 +6,15 @@
 #include "AVLtree.hpp"
 #include "BSTtree.hpp"
 
-#define MAX_ARRAY_VALUE 100
+#define MAX_ARRAY_VALUE 100000
 
 using namespace std;
 using tp = chrono::time_point<chrono::system_clock>; //do pomiaru czasu
 
 
 int* RandDescending(int n);
+
+// TO DO: Test everything, repair characters in printAVL printBST functions, handle height parameter of AVLtree
 
 int main(){
 	srand(time(NULL));
@@ -58,7 +60,7 @@ int main(){
 					AVLtree = createTreeAVL(array, 0, numElements - 1);
 					end = chrono::system_clock::now();
 					
-					cout <<"Time in microseconds(creating AVL): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
+					cout << endl <<"Time in microseconds(creating AVL): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
 					//printAVL("", "", AVLtree);
 					puts("AVL-tree builded succesfully.");
 					
@@ -71,7 +73,7 @@ int main(){
 					BSTtree = createTreeBST(array, numElements);
 					end = chrono::system_clock::now();
 					
-					cout << "Time in microseconds(creating BST): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
+					cout << endl << "Time in microseconds(creating BST): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
 					//printBST("", "", BSTtree);
 					puts("BST-tree builded succesfully.");
 					
