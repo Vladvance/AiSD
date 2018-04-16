@@ -2,6 +2,8 @@ Debug/
 DrzewaAVL.vcxproj
 DrzewaAVL.vcxproj.filters
 DrzewaAVL.vcxproj.user
+Sorting.cpp
 stdafx.cpp
 stdafx.h
 targetver.h
+.gitignore
