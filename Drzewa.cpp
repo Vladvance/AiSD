@@ -6,7 +6,7 @@
 #include "AVLtree.hpp"
 #include "BSTtree.hpp"
 
-#define MAX_ARRAY_VALUE 100000
+#define MAX_ARRAY_VALUE 100
 
 using namespace std;
 using tp = chrono::time_point<chrono::system_clock>; //do pomiaru czasu
@@ -61,7 +61,6 @@ int main(){
 					end = chrono::system_clock::now();
 					
 					cout << endl <<"Time in microseconds(creating AVL): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
-					//printAVL("", "", AVLtree);
 					puts("AVL-tree builded succesfully.");
 					
 					isCorrectAnswer = true;
@@ -74,7 +73,7 @@ int main(){
 					end = chrono::system_clock::now();
 					
 					cout << endl << "Time in microseconds(creating BST): " << chrono::duration_cast<chrono::microseconds>(end - start).count() << endl;
-					//printBST("", "", BSTtree);
+					printBST("", "", BSTtree);
 					puts("BST-tree builded succesfully.");
 					
 					isCorrectAnswer = true;
@@ -97,8 +96,9 @@ int main(){
 			puts("  5  Delete tree post-order;");
 			puts("  6  Print subtree from given key;");
 			puts("  7  Balance tree using rotation;");
-			puts("  8  Change tree type;");
-			puts("  9  Exit;");
+			puts("  8  Print graphicaly");
+			puts("  9  Change tree type;");
+			puts(" 10  Exit;");
 
 			puts("Give your answer:");
 			scanf_s("%d", &answer);
@@ -161,16 +161,17 @@ int main(){
 						printSubtreeAVL(AVLtree);
 						break;
 					case 7:
-						printAVL("", "", AVLtree);
 						puts("Balancing AVL-tree...");
 						AVLtree = balanceAVL(AVLtree, numElements);
 						puts("AVL-tree balanced.");
-						printAVL("", "", AVLtree);
 						break;
 					case 8:
-						isCorrectAnswer = true;
+						printAVL("", "", AVLtree);
 						break;
 					case 9:
+						isCorrectAnswer = true;
+						break;
+					case 10:
 						puts("Exited");
 						return 0;
 					default:

@@ -11,7 +11,7 @@ AVL_node* createTreeAVL(int* array, int start, int end, AVL_node* up) {
 
 	root->left = createTreeAVL(array, middle + 1, end, root);
 	root->right = createTreeAVL(array, start, middle - 1, root);
-
+	fixheight(root);
 	return root;
 }
 
@@ -170,7 +170,7 @@ void printAVL(std::string sp, std::string sn, AVL_node* root) {
 		printAVL(s + VERTICAL_BRANCH, RIGHT_BRANCH, root->right);
 
 		s = s.substr(0, sp.length() - 2);
-		std::cerr << s << sn << root->key << std::endl;
+		std::cerr << s << sn << root->key << " " << (int)root->height << std::endl;
 
 		s = sp;
 		if (sn == LEFT_BRANCH) s[s.length() - 2] = ' ';
@@ -192,22 +192,13 @@ void fixheight(AVL_node* p) {
 	p->height = (hl>hr ? hl : hr) + 1;
 }
 
-AVL_node* rotateright(AVL_node* p) {
-	AVL_node* q = p->left;
-	p->left = q->right;
-	q->right = p;
-	fixheight(p);
-	fixheight(q);
-	return q;
-}
-
-AVL_node* rotateleft(AVL_node* q) {
-	AVL_node* p = q->right;
-	q->right = p->left;
-	p->left = q;
-	fixheight(q);
-	fixheight(p);
-	return p;
+AVL_node* rotateLeftAVL(AVL_node* parent) {
+	AVL_node* temp = parent->right;
+	parent->right = temp->left;
+	temp->left = parent;
+	fixheight(parent);
+	fixheight(temp);
+	return temp;
 }
 
 AVL_node* balance(AVL_node* p) // балансировка узла p
@@ -215,13 +206,13 @@ AVL_node* balance(AVL_node* p) // балансировка узла p
 	fixheight(p);
 	if (bfactor(p) == 2) {
 		if (bfactor(p->right) < 0)
-			p->right = rotateright(p->right);
-		return rotateleft(p);
+			p->right = rotateRightAVL(p->right);
+		return rotateLeftAVL(p);
 	}
 	if (bfactor(p) == -2) {
 		if (bfactor(p->left) > 0)
-			p->left = rotateleft(p->left);
-		return rotateright(p);
+			p->left = rotateLeftAVL(p->left);
+		return rotateRightAVL(p);
 	}
 	return p; // балансировка не нужна
 }

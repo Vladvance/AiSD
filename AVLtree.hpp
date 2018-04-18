@@ -29,12 +29,13 @@ void printPreOrderAVL(AVL_node* root);
 void deletePostOrderAVL(AVL_node* root);
 void printSubtreeAVL(AVL_node* root);
 AVL_node* searchAVL(AVL_node* root, int key);
+AVL_node* rotateLeftAVL(AVL_node* parent);
+AVL_node* rotateRightAVL(AVL_node* parent);
 AVL_node* balanceAVL(AVL_node* root, int size);
 
 unsigned char height(AVL_node* p);
 int bfactor(AVL_node* p);
 void fixheight(AVL_node* p);
-AVL_node* rotateright(AVL_node* p);
 AVL_node* balance(AVL_node* p);
 
 void printAVL(std::string sp, std::string sn, AVL_node* v);
