@@ -33,16 +33,16 @@ int main(){
 	int* nodesToDelete;
 	int numNodesToDelete = 0;
 	
-	while(true){ //ilość danych
-		puts("Enter number of data: ");
-		if(!scanf_s("%u", &numElements) || numElements < 1)
-			puts("Incorrect answer. Try again.");
-		else break;
-	}
-
-	array = RandDescending(numElements); //wygenerowanie ciągu(można dodać wczytywanie z klawiatury i sortowanie)
-	
 	while(true){ //pętla główna programu
+		
+		while (true) { //ilość danych
+			puts("Enter number of data: ");
+			if (!scanf_s("%u", &numElements) || numElements < 1)
+				puts("Incorrect answer. Try again.");
+			else break;
+		}
+		
+		array = RandDescending(numElements); //wygenerowanie ciągu(można dodać wczytywanie z klawiatury i sortowanie)
 		
 		isCorrectAnswer = false;
 
@@ -161,9 +161,11 @@ int main(){
 						printSubtreeAVL(AVLtree);
 						break;
 					case 7:
+						printAVL("", "", AVLtree);
 						puts("Balancing AVL-tree...");
-						balance(AVLtree);	
+						AVLtree = balanceAVL(AVLtree, numElements);
 						puts("AVL-tree balanced.");
+						printAVL("", "", AVLtree);
 						break;
 					case 8:
 						isCorrectAnswer = true;
@@ -261,53 +263,7 @@ int main(){
 	return 0;
 }
 
-unsigned char height(AVL_node* p){
-	return p ? p->height : 0;
-}
 
-int bfactor(AVL_node* p){
-	return height(p->right) - height(p->left);
-}
-
-void fixheight(AVL_node* p){
-	unsigned char hl = height(p->left);
-	unsigned char hr = height(p->right);
-	p->height = (hl>hr ? hl : hr) + 1;
-}
-
-AVL_node* rotateright(AVL_node* p){
-	AVL_node* q = p->left;
-	p->left = q->right;
-	q->right = p;
-	fixheight(p);
-	fixheight(q);
-	return q;
-}
-
-AVL_node* rotateleft(AVL_node* q){
-	AVL_node* p = q->right;
-	q->right = p->left;
-	p->left = q;
-	fixheight(q);
-	fixheight(p);
-	return p;
-}
-
-AVL_node* balance(AVL_node* p) // балансировка узла p
-{
-	fixheight(p);
-	if(bfactor(p) == 2){
-		if(bfactor(p->right) < 0)
-			p->right = rotateright(p->right);
-		return rotateleft(p);
-	}
-	if(bfactor(p) == -2){
-		if(bfactor(p->left) > 0)
-			p->left = rotateleft(p->left);
-		return rotateright(p);
-	}
-	return p; // балансировка не нужна
-}
 
 int* RandDescending(int numElement){
 	int* array = (int*)malloc(numElement * sizeof(int));

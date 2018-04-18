@@ -6,13 +6,13 @@ BST_node* createTreeBST(int* array, int n) {
 	BST_node* root = node;
 
 	for (int i = 1; i < n; i++) {
-		while (node) {
+		while (true) {//node
 			if (array[i] < node->key) {
 				if (node->left)	node = node->left;
 				else {
 					node->left = new BST_node(array[i], node);
 					break;
-				}
+				} 
 			}
 			else {
 				if (node->right) node = node->right;
@@ -34,11 +34,11 @@ BST_node* findMaxBST(BST_node* root) {
 	}
 
 	while (root->right) {
-		printf("--> %d ", root->key);
+		printf("%d -->", root->key);
 		root = root->right;
 	}
 
-	printf("--> %d\nMax element: %d\n", root->key, root->key);
+	printf(" %d\nMax element: %d\n", root->key, root->key);
 	return root;
 }
 
@@ -203,15 +203,6 @@ void rotateLeftBST(BST_node* & root, BST_node* node) {
 		}
 		else root = p;
 	}
-}
-
-unsigned log2(unsigned x) {
-	unsigned y = 1;
-
-	while ((x >>= 1) > 0)
-		y <<= 1;
-
-	return y;
 }
 
 BST_node* balanceBST(BST_node* root) {

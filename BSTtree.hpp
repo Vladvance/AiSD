@@ -1,12 +1,12 @@
 ﻿#pragma once
+
 #include "stdafx.h"
 #include <stdlib.h>
 #include <string>
 #include <iostream>
-
-#define RIGHT_BRANCH "┌─"
-#define LEFT_BRANCH "└─"
-#define VERTICAL_BRANCH "│ "
+#define RIGHT_BRANCH "\332\304"
+#define LEFT_BRANCH "\300\304"
+#define VERTICAL_BRANCH "\263 "
 
 using namespace std;
 

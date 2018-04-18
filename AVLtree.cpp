@@ -22,14 +22,13 @@ AVL_node* findMaxAVL(AVL_node* root) {
 	}
 
 	while (root->right) {
-		printf("--> %d ", root->key);
+		printf(" %d -->", root->key);
 		root = root->right;
 	}
 
-	printf("--> %d\nMax element: %d\n", root->key, root->key);
+	printf(" %d\nMax element: %d\n", root->key, root->key);
 	return root;
 }
-
 
 AVL_node* findMinAVL(AVL_node* root) {
 	return root->left ? findMinAVL(root->left) : root;
@@ -99,7 +98,6 @@ void removeNodesAVL(AVL_node* root, int* valueList, int n) {
 		}
 	}
 }
-
 
 void printInOrderAVL(AVL_node* root) {
 	if (!root) {
@@ -178,4 +176,119 @@ void printAVL(std::string sp, std::string sn, AVL_node* root) {
 		if (sn == LEFT_BRANCH) s[s.length() - 2] = ' ';
 		printAVL(s + VERTICAL_BRANCH, LEFT_BRANCH, root->left);
 	}
+}
+
+unsigned char height(AVL_node* p) {
+	return p ? p->height : 0;
+}
+
+int bfactor(AVL_node* p) {
+	return height(p->right) - height(p->left);
+}
+
+void fixheight(AVL_node* p) {
+	unsigned char hl = height(p->left);
+	unsigned char hr = height(p->right);
+	p->height = (hl>hr ? hl : hr) + 1;
+}
+
+AVL_node* rotateright(AVL_node* p) {
+	AVL_node* q = p->left;
+	p->left = q->right;
+	q->right = p;
+	fixheight(p);
+	fixheight(q);
+	return q;
+}
+
+AVL_node* rotateleft(AVL_node* q) {
+	AVL_node* p = q->right;
+	q->right = p->left;
+	p->left = q;
+	fixheight(q);
+	fixheight(p);
+	return p;
+}
+
+AVL_node* balance(AVL_node* p) // балансировка узла p
+{
+	fixheight(p);
+	if (bfactor(p) == 2) {
+		if (bfactor(p->right) < 0)
+			p->right = rotateright(p->right);
+		return rotateleft(p);
+	}
+	if (bfactor(p) == -2) {
+		if (bfactor(p->left) > 0)
+			p->left = rotateleft(p->left);
+		return rotateright(p);
+	}
+	return p; // балансировка не нужна
+}
+
+AVL_node* rotateRightAVL(AVL_node* parent)
+{
+	if (!parent) return NULL;
+	AVL_node* temp = parent->left;
+	parent->left = temp->right;
+	temp->right = parent;
+	fixheight(parent);
+	fixheight(temp);
+	return temp;
+}
+
+void treeToVineAVL(AVL_node* root) {
+	AVL_node *tail, *rest, *temp;
+	tail = root;
+	rest = tail->right;
+	while(rest) {
+		if (!(rest->left)) {
+			tail = rest;
+			rest = rest->right;
+		}
+		else {
+			rest = rotateRightAVL(rest);
+			tail->right = rest;
+		}
+	}
+}
+
+void compress(AVL_node* root, int count) {
+	AVL_node *scanner, *child;
+	scanner = root;
+	for (int i = 1; i <= count; i++) {
+		child = scanner->right;
+		scanner->right = child->right;
+		scanner = scanner->right;
+		child->right = scanner->left;
+		scanner->left = child;
+	}
+}
+
+unsigned log2(unsigned x) {
+	unsigned y = 1;
+
+	while ((x >>= 1) > 0)
+		y <<= 1;
+
+	return y;
+}
+
+void vineToTreeAVL(AVL_node* root, int size) {
+	int leaves = size + 1 - pow(2, log2(size + 1));
+	compress(root, leaves);
+	size = size - leaves;
+	while (size > 1) {
+		compress(root, size / 2);
+		size = size / 2;
+	}
+}
+
+AVL_node* balanceAVL(AVL_node* root, int size) {
+	AVL_node* pseudoRoot = new AVL_node(0);
+	pseudoRoot->right = root;
+	treeToVineAVL(pseudoRoot);
+	vineToTreeAVL(pseudoRoot, size + 1);
+	root = pseudoRoot->right;
+	return root;
 }
